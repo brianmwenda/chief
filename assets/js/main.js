@@ -163,7 +163,7 @@ function readOutLoud(message){
 }
 
 
-function speak() {
+function speaks() {
   var speaking = $().articulate('isSpeaking');
   var paused = $().articulate('isPaused');
 
