@@ -119,70 +119,70 @@ function speak(obj){
 };
 
 
-// //talk animation
+//talk animation
 // const talkbtn = document.querySelector('#talk');
-//
-// const greetings = 'Thank you for contacting me, i will get back to you as soon as i can.';
-//
-//
-//
-// const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-//
-// const recognition = new SpeechRecognition();
-//
-// recognition.onstart = function(){
-//   console.log('Ai activated');
-//
-// };
-// recognition.onresult = function(event){
-//   console.log(event);
-//   const current = event.resultIndex;
-//   const transcript = event.results[current][0].transcript;
-//
-//   readOutLoud(transcript);
-// };
-// //add listerner to bn
-//
-// talkbtn.addEventListener('click',()=>{
+
+const greetings = 'Thank you for contacting me, i will get back to you as soon as i can.';
+
+
+
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+const recognition = new SpeechRecognition();
+
+recognition.onstart = function(){
+  console.log('Ai activated');
+
+};
+recognition.onresult = function(event){
+  console.log(event);
+  const current = event.resultIndex;
+  const transcript = event.results[current][0].transcript;
+
+  readOutLoud(transcript);
+};
+//add listerner to bn
+
+talkbtn.addEventListener('click',()=>{
 //  recognition.start();
-// });
+});
+
+function readOutLoud(message){
+  const speech = new SpeechSynthesisUtterance();
+
+// if(message.includes('')){
 //
-// function readOutLoud(message){
-//   const speech = new SpeechSynthesisUtterance();
-//
-// // if(message.includes('')){
-// //
-// //   speech.text = greetings;
-// // };
 //   speech.text = greetings;
-//
-//   speech.volume = 1;
-//   speech.rate = 1;
-//   speech.pitch = 1;
-//   window.speechSynthesis.speak(speech);
-// }
+// };
+  speech.text = greetings;
+
+  speech.volume = 1;
+  speech.rate = 1;
+  speech.pitch = 1;
+  window.speechSynthesis.speak(speech);
+}
 
 
-// function speak(obj) {
-//   var speaking = $().articulate('isSpeaking');
-//   var paused = $().articulate('isPaused');
-//
-//   // This is how you can use one button for a speak/pause toggle
-//   // Is browser speaking? (This returns 'true' even when paused)
-//   // If it is, is speaking paused? If paused, then resume; otherwise pause
-//   // If it isn't, then initiate speaking
-//
-//   if (speaking) {
-//     if (paused) {
-//       $().articulate('resume');
-//     } else {
-//       $().articulate('pause');
-//     }
-//   } else {
-//     $(obj).articulate('speak');
-//   };
-// };
-//
-// function stop() {
-//   $().articulate('stop');
-// };
+function speak() {
+  var speaking = $().articulate('isSpeaking');
+  var paused = $().articulate('isPaused');
+
+  // This is how you can use one button for a speak/pause toggle
+  // Is browser speaking? (This returns 'true' even when paused)
+  // If it is, is speaking paused? If paused, then resume; otherwise pause
+  // If it isn't, then initiate speaking
+
+  if (speaking) {
+    if (paused) {
+      $().articulate('resume');
+    } else {
+      $().articulate('pause');
+    }
+  } else {
+    $(obj).articulate('speak');
+  };
+};
+
+function stop() {
+  $().articulate('stop');
+};
