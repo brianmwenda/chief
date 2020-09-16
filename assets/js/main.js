@@ -143,9 +143,9 @@ recognition.onresult = function(event){
 };
 //add listerner to bn
 
-talkbtn.addEventListener('click',()=>{
-//  recognition.start();
-});
+// talkbtn.addEventListener('click',()=>{
+// //  recognition.start();
+// });
 
 function readOutLoud(message){
   const speech = new SpeechSynthesisUtterance();
