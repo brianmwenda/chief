@@ -1,5 +1,86 @@
-<!DOCTYPE html>
+
+<!--?php
+   ob_start();
+    //Define variables and set to empty values
+    $name_error = $email_error = $phone_error = "";
+    $name = $email = $phone = $message =$success = "";
+
+    //form is submitted with post method
+    if($_SERVER["REQUEST_METHOD"] == "POST"){
+      if(empty($_POST["name"])){
+        $name_error = "Name is required";
+      }else{
+        $name = test_input($_POST["name"]);
+        //check if name only contains letters and whitespaces
+        if(!preg_match("/^[a-zA-Z]*$/", $name)){
+          $name_error = "only letters and white space allowed";
+        }
+      }
+      if(empty($_POST["email"])){
+        $email_error = "Email is required";
+      }else{
+        $email = test_input($_POST["email"]);
+
+        //check if email address is well-formed
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+          $email_error = "Invalid email format";
+        }
+      }
+      if(empty($_POST["phone"])){
+        $phone_error = "phone is required";
+      }else{
+        $phone = test_input($_POST["phone"]);
+        //check if email address is well-formed
+        if(!preg_match("/^(\d[\s-]?)?[\(\[\s-]{0,2}?\d{3}[\)\}s-]{0,2}?\d{3}[\s-]?\d{4}/i", $phone)){
+          $phone_error = "Invalid phone number";
+        }
+      }
+      // if(empty($_POST["url"])){
+      //   $url_error = "";
+      // }else{
+      //   $url = test_input($_POST["url"]);
+      //   //check f url address syntax is valid(this regular expression also alllows dashes in the url)
+      //   if(!preg_match("/\b(?:(?:https?|ftp):\/\/|www\.[-a-az0-9+&@#\/%?=~_\!:,.;]*[-a-z0-9+&@#\/%=~_|]/i", $url)){
+      //     $url_error = "Invalid url";
+      //   }
+      // }
+      if(empty($_POST["message"])){
+        $message = "";
+      }else{
+        $message = test_input($_POST["message"]);
+      }
+
+      if($name_error =='' and $email_error == '' and $phone_error == ''){
+        $message_body ='';
+        unset($_POST['submit']);
+        foreach($_POST as $key => $value){
+          $message_body .= "$key: $value\n";
+        }
+        $to = "brianmwe425@gmail.com";
+        $subject = 'Portfolio contact form';
+        if(mail($to, $subject, $message)){
+          $success = "message sent, thank you for contacting us!";
+          $name = $mail = $phone = $message = '';
+          $name_error = $email_error = $phone_error = "";
+          $loginsuccessurl = $base_url.'login.php';
+	   header('location:'.$loginsuccessurl);
+
+
+
+        }
+      }
+    }
+    function test_input($data){
+      $data = trim($data);
+      $data = stripslashes($data);
+      $data = htmlspecialchars($data);
+      return $data;
+    }
+
+ ?-->
+
 <html lang="en">
+
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,12 +91,40 @@
         <!-- =====BOX ICONS===== -->
         <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
 
+        <!-- gsap -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js"></script>
 
-        <title>Portfolio website complete</title>
+        <!-- AnimeJS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+
+        <!-- JQuery -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
+
+        <title>Web Developer</title>
+        <link rel="icon" href="assets/img/about.png">
     </head>
-    <body>
+    <!-- loader -->
+
+    <div class="lo">
+
+    <div class="loading-screen"></div>
+
+    <div class="loader">
+          <div class="ringOne ring">
+                <img class="img" src="assets/img/ring.png" alt="">
+          </div>
+          <div class="ringTwo ring">
+                <img class="img" src="assets/img/ring.png" alt="">
+          </div>
+    </div>
+
+</div>
+    <body onload="exit()">
+
+
+
         <!--===== HEADER =====-->
-        <header class="l-header">
+        <header class="first-header header-deco">
             <nav class="nav bd-grid">
                 <div>
                     <a href="#home" class="nav__logo">Brian</a>
@@ -27,6 +136,7 @@
                         <li class="nav__item"><a data-page="about section" href="#about" class="nav__link">About</a></li>
                         <li class="nav__item"><a data-page="skills section" href="#skills" class="nav__link">Skills</a></li>
                         <li class="nav__item"><a data-page="work section" href="#work" class="nav__link">Work</a></li>
+
                         <li class="nav__item"><a data-page="contact section" href="#contact" class="nav__link">Contact</a></li>
                         <div class="indicator"></div>
                     </ul>
@@ -39,12 +149,14 @@
         </header>
 
         <main class="l-main">
+            <img id="decos" src="assets\img\reverser-wave-png-16-transparent 2.png" alt="">
             <!--===== HOME =====-->
             <section class="home bd-grid" id="home" data-index="0">
-                <div class="home__data">
-                    <h1 class="home__title">Hi,<br>I'am <span class="home__title-color">Brian</span><br> Web Developer</h1>
 
-                  <a  href="#contact" class="button" >Contact</a>
+                <div class="home__data">
+                    <h1 class="home__title">Hi,<br><a class="cursive">I'am </a><span class="home__title-color">Brian</span><br> Web Developer</h1>
+
+                  <a   href="#contact" class="button rot" >Contact</a>
 
 
                 </div>
@@ -58,32 +170,69 @@
                 <div class="home__img">
                     <img src="assets/img/about.png" alt="">
                 </div>
+
             </section>
 
             <!--===== ABOUT =====-->
             <section class="about section" data-index="1" id="about">
+
                 <h2 class="section-title">About</h2>
 
-                <div class="about__container bd-grid">
+                <div class="about__container bd-grid" >
                     <div class="about__img">
-                        <img src="assets/img/about2.jpg" alt="">
+                        <img src="assets/img/elct.png" alt="">
                     </div>
 
-                    <div>
+                    <div >
                         <h2 class="about__subtitle">I'am Brian</h2>
-                        <p class="about__text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptate cum expedita quo culpa tempora, assumenda, quis fugiat ut voluptates soluta, aut earum nemo recusandae cumque perferendis! Recusandae alias accusamus atque.</p>
+                        <p class="about__text">
+                          I am a webdeveloper with selfdrive and motivation to accomplish quality tasks in time. A team player and sometimes a team leader when necessary. In my free time i enjoy learning about new technical activities or spend time with loved ones.</p>
                     </div>
-                </div>
+
+              </div>
+  <img id="decos-below" src="assets\img\purple up.png" alt="">
             </section>
+
+<!-- reason -->
+      <div class="about-background section"  style="">
+                    <div class="reason-section">
+                      <div class="reason">
+                        <h1 >Why choose brian</h1>
+                        <img src="assets/img/computer_pc_PNG17498.png" alt="" srcset="">
+                        <p >
+                         Flexible working hours and convenience from reduced scheduled involvement.
+                         <br><br>
+                         Efficiency on time taken and resources involved to enjoy My services.
+                         <br><br>
+                         Improved reliability and competence from experts, what most are short of.
+                         <br><br>
+                         Effective support system to start-ups thus fostering on idea growth.
+                         <br><br>
+                         Tailor made packages to customer needs and customized less-costly premiums to subscribers.
+                        </p>
+                        <h3 >How to interact</h3>
+                        <p>
+                          On-call basis, Whatsapp and email interactions are the basic mechanisms through which our potential customers
+                          make contact.<br><br>
+                          Brianmwe425@gmail.com.
+                        </p>
+                        <a href="#contact" class="button">Learn More</a>
+                      </div>
+
+
+                    </div>
+
+      </div>
 
             <!--===== SKILLS =====-->
             <section class="skills section" data-index="2" id="skills">
+<img id="decos-above" src="assets\img\purple down.png" alt="">
                 <h2 class="section-title">Skills</h2>
 
                 <div class="skills__container bd-grid">
                     <div>
                         <h2 class="skills__subtitle">Profesional Skills</h2>
-                        <p class="skills__text">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit optio id vero amet, alias architecto consectetur error eum eaque sit.</p>
+                        <p class="skills__text">I am able to provide service thanks to years of gathering specialized experience. With a talent for conceptualizing and executing highly creative ideas, helps ensure no two projects are the same.</p>
                         <div class="skills__data">
                             <div class="skills__names">
                                 <i class='bx bxl-html5 skills__icon'></i>
@@ -138,46 +287,133 @@
                         <img src="assets/img/work3.jpg" alt="" class="skills__img">
                     </div>
                 </div>
+
             </section>
 
             <!--===== WORK =====-->
+            <br><br>
             <section class="work section" data-index="3" id="work">
+
                 <h2 class="section-title">Work</h2>
 
                 <div class="work__container bd-grid">
                     <div class="work__img">
                         <img src="assets/img/work1.jpg" alt="">
+                        <div class="show-links">
+                          <li><a href="#">Github</a></li>
+                          <li><a href="#">View</a></li>
+                        </div>
                     </div>
                     <div class="work__img">
                         <img src="assets/img/work2.jpg" alt="">
+                        <div class="show-links">
+                          <li><a href="#">Github</a></li>
+                          <li><a href="#">View</a></li>
+                        </div>
                     </div>
                     <div class="work__img">
                         <img src="assets/img/work3.jpg" alt="">
+                        <div class="show-links">
+                          <li><a href="#">Github</a></li>
+                          <li><a href="#">View</a></li>
+                        </div>
                     </div>
                     <div class="work__img">
                         <img src="assets/img/work4.jpg" alt="">
+                        <div class="show-links">
+                          <li><a href="#">Github</a></li>
+                          <li><a href="#">View</a></li>
+                        </div>
                     </div>
                     <div class="work__img">
                         <img src="assets/img/work5.jpg" alt="">
+                        <div class="show-links">
+                          <li><a href="#">Github</a></li>
+                          <li><a href="#">View</a></li>
+                        </div>
                     </div>
                     <div class="work__img">
                         <img src="assets/img/work6.jpg" alt="">
+                        <div class="show-links">
+                          <li><a href="#">Github</a></li>
+                          <li><a href="#">View</a></li>
+                        </div>
                     </div>
                 </div>
             </section>
 
+            <!-- services -->
+
+            <div class="services section">
+
+              <!-- <h2 class="sec-section-title" >Services</h2> -->
+              <h5 class="services-sub">Exceeding Your Expectations</h5>
+              <div class="bd-grid">
+                <div class="consulting">
+                  <div class="consulting__img">
+                    <img src="assets/img/work1.jpg" alt="">
+                  </div>
+                  <div class="consulting__parag">
+                    <h2>Consulting</h2>
+                    <h5>Excellent Results</h5>
+                    <p>
+                      Frequently utilized by my clients, this service has been essential to success on many occasions. Along with my unique professional perspective, this service has helped clients reach new heights and gain more significant influence through their projects. If you’d like to learn more about this service, simply get in touch.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="Design">
+
+                  <div class="Design__parag">
+                    <h2>Design</h2>
+                    <h5>Satisfaction Guaranteed</h5>
+                    <p>I’ve been a professional in this industry since 2000 and have developed various skills in the process. Take advantage of this service to reach new heights and gain influence in your field. With extensive technical expertise and a knack for clear and creative ideas, I’m fully capable of bringing your design goals to fruition.
+  With a plethora of experience in this industry, I’ve had the chance to garner several creative and practical skills. This service is a compilation of these skills, and has given many clients the push they need to reach a new level through their project. Reach out today to learn more about this service and schedule a consultation.  </p>
+                  </div>
+                  <div class="Design__img">
+                    <img src="assets/img/work2.jpg" alt="">
+                  </div>
+                </div>
+
+                <div class="Ideation">
+                  <div class="Ideation__img">
+                    <img src="assets/img/work3.jpg" alt="">
+                  </div>
+                  <div class="Ideation__parag">
+                    <h2>Ideation</h2>
+                    <h5>Practical Solutions</h5>
+                    <p>I am able to provide this service thanks to years of gathering specialized experience. With a talent for conceptualizing and executing highly creative ideas, this service allows me to ensure no two projects are the same. Get in touch with me today to learn how this service can make a difference in your upcoming project.</p>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+
+
+
             <!--===== CONTACT =====-->
             <section class="contact section" data-index="4" id="contact">
-                <h2 class="section-title">Contact</h2>
+
+                <h2 class="section-title">Get in Touch</h2>
 
                 <div class="contact__container bd-grid">
-                    <form action="" class="contact__form">
-                        <input type="text" placeholder="Name" class="contact__input">
-                        <input type="mail" placeholder="Email" class="contact__input">
-                        <textarea name="" id="" cols="0" rows="10" class="contact__input"></textarea>
-                        <input type="button" value="Send"  onclick="speak('article')" class="contact__button button">
+                    <form action="index.php" method="post" class="contact__form">
+                        <input type="text" placeholder="Name*" value="" class="contact__input">
+                        <span class="error"></span>
+
+                        <input type="mail" placeholder="Email*"  value="" class="contact__input">
+                        <span class="error"></span>
+
+                        <textarea name="" id="" placeholder="Type your message here...*" cols="0" rows="10"  value="<?= $message ?>" class="contact__input"></textarea>
+                        <input type="submit" value="submit"   class="contact__button button" onclick="speak('article')" data-submit="...sending">
+                        <!-- onclick="speak('article')" -->
+                        <div ><a class="success"></a></div><br>
+
                     </form>
                 </div>
+  <img id="decos-below" src="assets\img\footer deco.png" alt="">
             </section>
         </main>
         <div id="move" onclick=topFunction()>
@@ -185,7 +421,7 @@
         </div>
 
         <article>
-          <p>Thank you for contacting me, i will get back to you as soon as i can.</p>
+          <p>Message sent successfully.</p>
         </article>
         <!--===== FOOTER =====-->
         <footer class="footer">
@@ -212,6 +448,8 @@
   //=========================scroll up button======================//
   //Get the button
   var mybutton = document.getElementById('move');
+mybutton.style.display = 'none';
+  const he = document.querySelector(".first-header");
 
   // When the user scrolls down 20px from the top of the document, show the button
   window.onscroll = function() {scrollFunction()};
@@ -219,9 +457,17 @@
   function scrollFunction() {
     if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 0) {
       mybutton.style.display = "";
+      he.classList.remove('header-deco');
+      he.classList.add('header-deco-sec');
+
 
     } else {
       mybutton.style.display = "none";
+      he.classList.remove('header-deco-sec');
+      he.classList.add('header-deco');
+
+
+
 
     }
   }
@@ -232,4 +478,45 @@
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
   }
+
+  // activating the show links
+function activating(){
+  const thelinkscontainer = document.querySelectorAll('.work__img');
+
+  console.log('activated links');
+  thelinkscontainer.forEach(cur => {
+    cur.addEventListener('click',()=>{
+
+      var fields = document.querySelectorAll('.show-links');
+
+      var nodeListForEach = function(list,callback){
+
+        for(var i = 0;i< list.length; i++){
+          if(event.which == 1){
+
+            callback(list[i], i);
+          }
+
+
+
+        };
+      };
+
+      nodeListForEach(fields, function(current,index){
+        current.lastElementChild.classList.toggle('show-links-activated');
+        console.log(current.indexOf('work__img'));
+        console.log('activated links');
+
+
+      });
+
+
+
+    });
+  });
+}
+activating();
+
+
+
 </script>
