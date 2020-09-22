@@ -410,9 +410,9 @@ padding-bottom: 4rem;
   margin-bottom: var(--mb-2);
 
 }
-/* .about__text{
-  font-family: serif,monospace;
-} */
+.about__text{
+  font-family: 'Times New Roman', Times, serif;
+}
 .about__img{
   justify-self: center;
 }
@@ -491,7 +491,7 @@ transition: 1s ;
 }
 .skills__text{
   margin-bottom: var(--mb-4);
-
+  font-family: 'Times New Roman', Times, serif;
 }
 .skills__data{
   display: flex;
@@ -633,7 +633,7 @@ animation-fill-mode:forwards;
   padding-bottom: 2rem;
 }
 .services p{
-  font-family: serif;
+  font-family:'Times New Roman', Times, serif;
 }
 .consulting,
 .Design,
