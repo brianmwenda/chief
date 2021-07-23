@@ -89,6 +89,8 @@ img{
   width: 100%;
   height: 100vh;
   z-index: 1000;
+align-items: center;
+background-color: white;
 }
 .img {
       width: 100%;
@@ -98,12 +100,28 @@ img{
 
 
 
-.loading-screen {
+/* .loading-screen {
       position: absolute;
       width: 100%;
       height: 100vh;
-      background: #0a0a0a;
+      background: white;
 
+} */
+.loading-screen {
+  margin: auto;
+  padding: auto;
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  animation: spin 2s linear infinite;
+  text-align: center;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .ring {
@@ -269,6 +287,9 @@ img{
 }
 .nav__logo{
   color: var(--second-color);
+  font-family: Brush Script MT;
+  font-size: 35px
+
 }
 .nav__toggle{
   color: var(--second-color);
@@ -559,7 +580,7 @@ transition: 1s ;
 width: 100%;
 height: 25%;
 
-  background:linear-gradient(rgb(0,0,0,.4),rgb(255,255,255)) ;
+
   /* background-color: inherit; */
   display: inline-flex;
   flex-direction: row;
@@ -567,19 +588,21 @@ height: 25%;
   margin-left:  auto;
   z-index: 1;
   overflow: hidden;
-  margin-bottom: -50%;
+  margin-bottom: 0%;
 }
 .show-links li{
   list-style: none;
   padding: 10%  0;
+
 }
 .show-links a{
   color: gray;
   background-color: white;
-  box-shadow: 2px 2px 5px black;
-  border-radius: .5rem;
-  padding: 7px;
+  box-shadow: 2px 2px 5px gray;
+  border-radius: .7rem;
+  padding:2px 25px;
   cursor: pointer;
+
 }
 .show-links a:hover{
   animation: linkfade  .5s ;
